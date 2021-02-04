@@ -50,7 +50,7 @@ router.post('/book/booking/:restroomid', auth, async (req, res) => {
         console.log(restroom.left)
         //update left restroom
         restroom.left = restroom.left - req.body.count;
-        await restroom.save(0)
+        await restroom.save()
         
         console.log(restroom.left)
 
