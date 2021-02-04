@@ -25,7 +25,7 @@ router.get('/book/me', auth, async (req, res) => {
 
 router.post('/book/booking/:restroomid', auth, async (req, res) => {
     try {
-        const restroom = await RestRoom.findById(req.params.id)
+        const restroom = await RestRoom.findById(req.params.restroomid)
         if (!restroom) {
             return res.status(400).send({ error: "not found restroom." })
         }
@@ -47,17 +47,23 @@ router.post('/book/booking/:restroomid', auth, async (req, res) => {
                 error: "Not enough room left."
             })
         }
-
+        console.log(restroom.left)
         //update left restroom
         restroom.left = restroom.left - req.body.count;
+        await restroom.save(0)
+        
+        console.log(restroom.left)
+
+        const book = new Book({
+            user_id: req.user._id,
+            restroom_id: req.params.restroomid,
+            count: req.body.count
+        })
+
+        await book.save()
 
 
-
-
-
-
-
-
+        res.send(book)
     } catch (e) {
         res.status(400).send(error.message)
     }
