@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const RestRoom = mongoose.model('RestRoom', {
+const restroomSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -42,7 +42,22 @@ const RestRoom = mongoose.model('RestRoom', {
     isActive: {
         type: Boolean,
         default: true
-    }
+    },
+    customer: [
+        {
+            costomerId: {
+                type: mongoose.Schema.Types.ObjectId
+            }
+        }
+    ]
 })
+
+restroomSchema.virtual("books", {
+    ref: "Book",
+    localField: "_id", //_id of restroom
+    foreignField: "restroom_id"
+})
+
+const RestRoom = mongoose.model('RestRoom', restroomSchema)
 
 module.exports = RestRoom
