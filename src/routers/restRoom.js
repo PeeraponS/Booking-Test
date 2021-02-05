@@ -14,25 +14,17 @@ router.post('/restrooms', async (req, res) => {
     }
 })
 
-router.get('/restrooms', async (req, res) => {
-    try {
-        const restrooms = await RestRoom.find({})
-        res.send(restrooms)
-    } catch (e) {
-        res.status(500).send()
-    }
-})
-
-
 //get  /restrooms?isActive=true
+//get  /restrooms?isActive=false
 router.get('/restrooms', async (req, res) => {
-    let query = {
-        isActive: req.query.isActive ? true : false,
-    };
+    const match = {}
     
+    if (req.query.isActive) {
+        match.isActive = req.query.isActive === 'true'
+    }
 
     try {
-        const restrooms = await RestRoom.find(query);
+        const restrooms = await RestRoom.find(match);
 
         res.send(restrooms);
     } catch (e) {

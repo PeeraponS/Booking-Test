@@ -31,8 +31,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
         trim: true,
-        minlength: 10,
-        maxlength: 10
+        validate(value) {
+            if (!validator.isMobilePhone(value, 'th-TH')) {
+                throw new Error('phone is invalid')
+            }
+        }
     },
     email: {
         type: String,
@@ -51,6 +54,8 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
         trim: true,
+        minlength: 13,
+        maxlength: 13
     },
     tokens: [{
         token: {
@@ -79,7 +84,7 @@ userSchema.methods.toJSON = function () {
 userSchema.methods.generateAuthToken = async function () {
     const user = this
 
-    const token = jwt.sign({ _id: user._id.toString }, 'thisiskeysecret')
+    const token = jwt.sign({ _id: user._id.toString }, process.env.JWT_SECRET)
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
