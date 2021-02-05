@@ -65,12 +65,14 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+// relationship between user and books
 userSchema.virtual('books', {
     ref: "Book",
     localField: "_id", //id of user
     foreignField: "user_id"
 })
 
+// this method will called automatically when the object is passed to JSON.stringify
 userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()

@@ -3,6 +3,7 @@ const router = new express.Router()
 const RestRoom = require('../models/restRoom')
 const User = require('../models/user')
 
+// create restroom
 router.post('/restrooms', async (req, res) => {
     const restrooms = new RestRoom(req.body)
 
@@ -14,8 +15,9 @@ router.post('/restrooms', async (req, res) => {
     }
 })
 
-//get  /restrooms?isActive=true
-//get  /restrooms?isActive=false
+// get  /restrooms   all restroom
+// get  /restrooms?isActive=true
+// get  /restrooms?isActive=false
 router.get('/restrooms', async (req, res) => {
     const match = {}
     
@@ -32,6 +34,7 @@ router.get('/restrooms', async (req, res) => {
     }
 })
 
+// delete restroom
 router.delete('/restrooms/:id', async (req, res) => {
     try {
         const restrooms = await RestRoom.findByIdAndDelete(req.params.id)

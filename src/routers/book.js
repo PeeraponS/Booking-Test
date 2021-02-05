@@ -5,6 +5,7 @@ const RestRoom = require('../models/restRoom')
 const User = require('../models/user')
 const Book = require('../models/book')
 
+// get all book
 router.get('/book', async (req, res) => {
     try {
         const book = await Book.find({})
@@ -14,6 +15,7 @@ router.get('/book', async (req, res) => {
     }
 })
 
+// get all book booked with user
 router.get('/book/me', auth, async (req, res) => {
     try {
         const book = await Book.find({ user_id: req.user })
@@ -23,6 +25,7 @@ router.get('/book/me', auth, async (req, res) => {
     }
 })
 
+// booking
 router.post('/book/booking/:restroomid', auth, async (req, res) => {
     try {
         const restroom = await RestRoom.findById(req.params.restroomid)
@@ -65,6 +68,7 @@ router.post('/book/booking/:restroomid', auth, async (req, res) => {
     }
 })
 
+// cancel book
 router.delete('/book/booking/:id', auth, async (req, res) => {
     try {
         const book = await Book.findById(req.params.id)
@@ -82,7 +86,5 @@ router.delete('/book/booking/:id', auth, async (req, res) => {
         res.status(500).send()
     }
 })
-
-
 
 module.exports = router
