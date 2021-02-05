@@ -81,6 +81,8 @@ router.delete('/book/booking/:id', auth, async (req, res) => {
         restroom.left = restroom.left + book.count;
         await restroom.save()
 
+        await Book.findByIdAndDelete(req.params.id)
+
         res.send(book)
     } catch (e) {
         res.status(500).send()
