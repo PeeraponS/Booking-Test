@@ -69,6 +69,26 @@ router.post('/book/booking/:restroomid', auth, async (req, res) => {
     }
 })
 
+router.delete('/book/booking/:id', auth, async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id)
+    
+        if (!book) {
+            res.status(404).send()
+        }
+
+        const restroom = await RestRoom.findById(book.restroom_id)
+        restroom.left = restroom.left + book.count;
+        await restroom.save()
+
+        console.log(restroom.left)
+
+        res.send(book)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 
 
 module.exports = router
