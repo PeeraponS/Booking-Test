@@ -47,21 +47,17 @@ router.post('/book/booking/:restroomid', auth, async (req, res) => {
                 error: "Not enough room left."
             })
         }
-        console.log(restroom.left)
+
         //update left restroom
         restroom.left = restroom.left - req.body.count;
         await restroom.save()
-        
-        console.log(restroom.left)
 
         const book = new Book({
             user_id: req.user._id,
             restroom_id: req.params.restroomid,
             count: req.body.count
         })
-
         await book.save()
-
 
         res.send(book)
     } catch (e) {
@@ -81,8 +77,6 @@ router.delete('/book/booking/:id', auth, async (req, res) => {
         restroom.left = restroom.left + book.count;
         await restroom.save()
 
-        console.log(restroom.left)
-
         res.send(book)
     } catch (e) {
         res.status(500).send()
@@ -92,4 +86,3 @@ router.delete('/book/booking/:id', auth, async (req, res) => {
 
 
 module.exports = router
-
